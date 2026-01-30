@@ -1,0 +1,54 @@
+data:
+    type: "LLdataset"
+    train_dataset: "unpaired"
+    val_dataset: "LOLv1"
+    patch_size: 512
+    channels: 3
+    num_workers: 1
+    data_dir: "./data/MSEC"
+    # ckpt_dir: "" # resume training after stage1
+    conditional: True
+
+model:
+    in_channels: 3
+    out_ch: 3
+    ch: 64
+    ch_mult: [1, 2, 3, 4]
+    num_res_blocks: 2
+    dropout: 0.0
+    ema_rate: 0.999
+    ema: True
+    resamp_with_conv: True
+
+diffusion:
+    beta_schedule: linear
+    beta_start: 0.0001
+    beta_end: 0.02
+    num_diffusion_timesteps: 1000
+    num_sampling_timesteps: 20
+    # num_sampling_timesteps: 40
+
+training:
+    batch_size: 1
+    n_epochs: 10000
+    validation_freq: 1
+    
+sampling:
+    batch_size: 1
+
+optim:
+    weight_decay: 0.000
+    optimizer: "Adam"
+    lr: 0.00002
+    amsgrad: False
+    eps: 0.00000001
+
+eecn:
+  stage1:
+    base_channels: 64
+    psfi_layers: 3
+    mask_levels: 4          
+    use_dfcm: true
+
+  tfdm:
+    condition_type: "feature"   
